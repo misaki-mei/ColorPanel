@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="colorful">
+        <item>@color/colorPanelAccent</item>
+        <item>@color/colorPanelBlack</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPanelRed</item>
+        <item>@color/green</item>
+    </string-array>
+</resources>

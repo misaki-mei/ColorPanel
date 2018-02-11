@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ColorPanelLibrary</string>
+    <string name="hint_edit_color">color</string>
+    <string name="color_panel_text">text</string>
+    <string name="color_panel_ok">ok</string>
+    <string name="color_panel_cancel">cancel</string>
+</resources>

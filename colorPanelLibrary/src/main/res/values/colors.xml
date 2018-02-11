@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPanelWhite">#ffffffff</color>
+    <color name="colorPanelBlack">#ff000000</color>
+    <color name="colorPanelAccent">#FFFF4081</color>
+    <color name="colorPanelRed">#ffff0000</color>
+    <color name="colorPanelDarkGrey">#535353</color>
+    <color name="colorPanelBlue">#3F51B5</color>
+</resources>
