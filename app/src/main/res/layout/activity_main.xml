@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:orientation="vertical"
+android:gravity="center"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+
+    <snowyuki.colorpanellibrary.view.ColorDisplayView
+        android:id="@+id/color_element"
+        app:display_mode="multi_color"
+        app:mask_shape="circle"
+        app:color1="@color/colorPrimary"
+        app:color2="@color/colorAccent"
+        app:border_color="@color/colorPanelBlack"
+        app:border_width="2dp"
+        app:gird_column="2"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp" />
+
+</LinearLayout>
