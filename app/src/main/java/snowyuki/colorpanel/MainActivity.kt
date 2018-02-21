@@ -1,10 +1,11 @@
 package snowyuki.colorpanel
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import snowyuki.colorpanellibrary.view.ColorPanelDialog
+import snowyuki.colorpanellibrary.view.OnColorSelectListener
+import snowyuki.colorpanellibrary.view.RgbPanelDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,13 +17,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initUI(){
         color_element.setOnClickListener {
-            ColorPanelDialog(this)
-                    .setColor(ContextCompat.getColor(this,R.color.colorAccent))
-                    .setOnColorSelectedListener(object : ColorPanelDialog.OnColorSelectedListener{
-                        override fun onColorSelected(color: Int) {
-                            color_element.changeColor(color,1)
+            RgbPanelDialog(this)
+                    .setColor(color_element.getColor())
+                    .setOnColorSelectListener(object : OnColorSelectListener{
+                        override fun onColorSelect(color: Int) {
+                            color_element.changeColor(color)
                         }
-
                     })
                     .show()
         }

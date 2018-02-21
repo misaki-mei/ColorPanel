@@ -18,7 +18,7 @@ class ColorPanelDialog(private val c : Context) : AlertDialog(c){
     private var isColorPanelChanged = false
     private var curColor = 0
 
-    private var onColorSelectedListener : OnColorSelectedListener? = null
+    private var onColorSelectListener : OnColorSelectListener? = null
 
     init {
         initParams()
@@ -57,7 +57,7 @@ class ColorPanelDialog(private val c : Context) : AlertDialog(c){
                     isColorPanelChanged = false
                     return
                 }
-                if(newEditable == null || newEditable.length == 0)return
+                if(newEditable == null || newEditable.isEmpty())return
                 if(newEditable.matches(Regex("^#[0-9a-f]{6}([0-9a-f]{2})?$"))){
                     curColor = Color.parseColor(newEditable.toString())
                     colorPanelView.setColor(curColor)
@@ -73,7 +73,7 @@ class ColorPanelDialog(private val c : Context) : AlertDialog(c){
 
         dialog_btn_positive.visibility = View.VISIBLE
         dialog_btn_positive.setOnClickListener {
-            onColorSelectedListener?.onColorSelected(curColor)
+            onColorSelectListener?.onColorSelect(curColor)
             this.dismiss()
         }
 
@@ -94,12 +94,8 @@ class ColorPanelDialog(private val c : Context) : AlertDialog(c){
         return this
     }
 
-    fun setOnColorSelectedListener(onColorSelectedListener: OnColorSelectedListener): ColorPanelDialog {
-        this.onColorSelectedListener = onColorSelectedListener
+    fun setOnColorSelectedListener(onColorSelectListener: OnColorSelectListener): ColorPanelDialog {
+        this.onColorSelectListener = onColorSelectListener
         return this
-    }
-
-    public interface OnColorSelectedListener{
-        fun onColorSelected(color : Int)
     }
 }

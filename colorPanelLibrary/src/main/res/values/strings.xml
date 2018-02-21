@@ -2,6 +2,10 @@
     <string name="app_name">ColorPanelLibrary</string>
     <string name="hint_edit_color">color</string>
     <string name="color_panel_text">text</string>
-    <string name="color_panel_ok">ok</string>
-    <string name="color_panel_cancel">cancel</string>
+    <string name="color_panel_ok">OK</string>
+    <string name="color_panel_cancel">Cancel</string>
+    <string name="color_panel_r">R</string>
+    <string name="color_panel_g">G</string>
+    <string name="color_panel_b">B</string>
+    <string name="color_panel_a">A</string>
 </resources>

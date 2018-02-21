@@ -2,9 +2,17 @@ package snowyuki.colorpanellibrary.view
 
 import android.content.Context
 import android.graphics.*
+import android.support.annotation.IntDef
 import android.util.AttributeSet
 import android.view.View
 import snowyuki.colorpanellibrary.R
+import snowyuki.colorpanellibrary.view.drawable.BackgroundDrawable
+
+/*
+* This is the view for displaying color
+* which can display a single color, two colors with transition effect
+* and multiple color
+ */
 
 class ColorDisplayView : View {
 
@@ -25,10 +33,17 @@ class ColorDisplayView : View {
         const val SHAPE_CIRCLE = 2
     }
 
+    var useWBBackground = true
+    private val wbBackgroundDrawable by lazy {
+        BackgroundDrawable()
+    }
+
     private var w = 0
     private var h = 0
     private var wf = 0f
     private var hf = 0f
+
+    //the width and height of the cells of multiple color
     private var cw = 0f
     private var ch = 0f
     var borderWidth = 0f
@@ -49,14 +64,35 @@ class ColorDisplayView : View {
     private lateinit var maskPath : Path
     private var maskShape = SHAPE_RECT
     private lateinit var borderPaint : Paint
-    private lateinit var contentPaint: Paint
-    private lateinit var contentShader : Shader
+    private lateinit var contentPaint: Paint //draw the main content(color)
+    private lateinit var contentShader : Shader //for multiple color mode
 
     constructor(context: Context?) : this(context,null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context,attrs,0)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr){
         init(attrs)
     }
+
+    @IntDef(
+            DISPLAY_SINGLE_COLOR.toLong(),
+            DISPLAY_MULTI_COLOR.toLong(),
+            DISPLAY_TRANSITION_COLOR.toLong()
+    )
+    annotation class DisplayMode
+
+    @IntDef(
+            TRANSITION_LINEAR.toLong(),
+            TRANSITION_RADIAL.toLong(),
+            TRANSITION_SWEEP.toLong()
+    )
+    annotation class TransitionStyle
+
+    @IntDef(
+            SHAPE_RECT.toLong(),
+            SHAPE_ROUND_RECT.toLong(),
+            SHAPE_CIRCLE.toLong()
+    )
+    annotation class MaskShape
 
     private fun initParams(){
         maskPath = Path()
@@ -80,9 +116,7 @@ class ColorDisplayView : View {
             val len = colorIDArray.length()
             if(len > 0)multiColorNum = len
             colorSet.clear()
-            for(i in 0 until len){
-                colorSet.add(colorIDArray.getColor(i,Color.WHITE))
-            }
+            (0 until len).mapTo(colorSet) { colorIDArray.getColor(it,Color.WHITE) }
             colorIDArray.recycle()
         }
         roundRectRadius = ta.getDimension(R.styleable.ColorDisplayView_rect_radius,roundRectRadius)
@@ -90,8 +124,8 @@ class ColorDisplayView : View {
         borderColor = ta.getColor(R.styleable.ColorDisplayView_border_color,Color.WHITE)
         borderPaint.color = borderColor
         borderPaint.strokeWidth = borderWidth
-        displayMode = ta.getInt(R.styleable.ColorDisplayView_display_mode, 0)
-        maskShape = ta.getInt(R.styleable.ColorDisplayView_mask_shape,0)
+        displayMode = ta.getInt(R.styleable.ColorDisplayView_display_mode, DISPLAY_SINGLE_COLOR)
+        maskShape = ta.getInt(R.styleable.ColorDisplayView_mask_shape, SHAPE_RECT)
         when(displayMode){
             DISPLAY_SINGLE_COLOR -> {
                 setSingleColor()
@@ -112,6 +146,14 @@ class ColorDisplayView : View {
         ta.recycle()
     }
 
+    fun getColor(index: Int = 0): Int {
+        return colorSet[index]
+    }
+
+    /*
+    * set the mode of displaying to single-color
+    * params color: the color for displaying
+     */
     fun setSingleColor(color : Int){
         colorSet.clear()
         colorSet.add(color)
@@ -123,6 +165,12 @@ class ColorDisplayView : View {
         displayMode = DISPLAY_SINGLE_COLOR
     }
 
+    /*
+    * set the mode of displaying to single-color
+    * params colorArray: the colors for displaying
+    * params row: the row of color gird
+    * params column: the column of color gird
+     */
     fun setMultiColor(colorArray : Array<Int>, row : Int , column : Int){
         colorSet.clear()
         colorSet.addAll(colorArray)
@@ -134,6 +182,12 @@ class ColorDisplayView : View {
         setMultiColor()
     }
 
+    /*
+    * set the mode of displaying to single-color
+    * params colorArray: the colors for displaying
+    * params row: the row of color gird
+    * params column: the column of color gird
+     */
     fun setMultiColor(colorArray : ArrayList<Int>, row : Int , column : Int){
         colorSet.clear()
         colorSet.addAll(colorArray)
@@ -151,9 +205,27 @@ class ColorDisplayView : View {
 
     fun changeColor(color : Int, index : Int = 0){
         colorSet[index] = color
+        when(displayMode){
+            DISPLAY_SINGLE_COLOR -> {
+                contentPaint.color = colorSet[0]
+            }
+            DISPLAY_TRANSITION_COLOR -> {
+                when(transitionMode){
+                    TRANSITION_LINEAR -> setLinearColor(linearGradientAngle)
+                    TRANSITION_RADIAL -> setRadialColor()
+                    TRANSITION_SWEEP -> setSweepColor()
+                }
+            }
+        }
         invalidate()
     }
 
+    /*
+    * set the mode of displaying to transition-color(linearGradient)
+    * params color1: the color for displaying(outset of the linearGradient)
+    * params color2: the color for displaying(end of the linearGradient)
+    * params angle: angle of the linearGradient
+     */
     fun setLinearColor(color1 : Int,color2 : Int,angle : Int = 0){
         colorSet.clear()
         colorSet.add(color1)
@@ -161,7 +233,12 @@ class ColorDisplayView : View {
         if(w != 0)
         setLinearColor(angle)
     }
-    
+
+    /*
+    * set the mode of displaying to transition-color(RadialGradient)
+    * params color1: the color for displaying(center of the RadialGradient)
+    * params color2: the color for displaying(outer ring of the RadialGradient)
+     */
     fun setRadialColor(color1 : Int, color2 : Int){
         colorSet.clear()
         colorSet.add(color1)
@@ -169,7 +246,12 @@ class ColorDisplayView : View {
         if(w != 0)
         setRadialColor()
     }
-    
+
+    /*
+    * set the mode of displaying to transition-color(SweepGradient)
+    * params color1: the color for displaying(first of the SweepGradient)
+    * params color2: the color for displaying(second of the SweepGradient)
+     */
     fun setSweepColor(color1: Int, color2: Int){
         colorSet.clear()
         colorSet.add(color1)
@@ -196,7 +278,7 @@ class ColorDisplayView : View {
         contentPaint.shader = contentShader
     }
 
-    fun setMaskShape(maskShape : Int){
+    fun setMaskShape(@MaskShape maskShape : Int){
         this.maskShape = maskShape
         if(w != 0){
             setMaskPath()
@@ -220,12 +302,15 @@ class ColorDisplayView : View {
         }
     }
 
-
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if(canvas == null)return
         when(displayMode){
             DISPLAY_SINGLE_COLOR, DISPLAY_TRANSITION_COLOR -> {
+                if(useWBBackground){
+                    wbBackgroundDrawable.setBounds(borderWidth.toInt(),borderWidth.toInt(), (w-borderWidth).toInt(), (h-borderWidth).toInt())
+                    wbBackgroundDrawable.draw(canvas)
+                }
                 canvas.drawPath(maskPath,contentPaint)
                 canvas.drawPath(maskPath,borderPaint)
             }
@@ -308,34 +393,34 @@ class ColorDisplayView : View {
         if(widthMode == MeasureSpec.EXACTLY && heightMode == MeasureSpec.AT_MOST){
             when(displayMode){
                 DISPLAY_SINGLE_COLOR, DISPLAY_TRANSITION_COLOR -> {
-                    if(finalWidth < allocatedHeigth){
-                        finalHeight = allocatedWidth
+                    finalHeight = if(finalWidth < allocatedHeigth){
+                        allocatedWidth
                     }else{
-                        finalHeight = allocatedHeigth
+                        allocatedHeigth
                     }
                 }
                 DISPLAY_MULTI_COLOR -> {
-                    if(finalWidth*girdRow/girdColumn < allocatedHeigth){
-                        finalHeight = finalWidth*girdRow/girdColumn
+                    finalHeight = if(finalWidth*girdRow/girdColumn < allocatedHeigth){
+                        finalWidth*girdRow/girdColumn
                     }else{
-                        finalHeight = allocatedHeigth
+                        allocatedHeigth
                     }
                 }
             }
         }else if(widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.EXACTLY){
             when(displayMode){
                 DISPLAY_SINGLE_COLOR, DISPLAY_TRANSITION_COLOR -> {
-                    if(finalHeight < allocatedWidth){
-                        finalWidth = allocatedHeigth
+                    finalWidth = if(finalHeight < allocatedWidth){
+                        allocatedHeigth
                     }else{
-                        finalWidth = allocatedWidth
+                        allocatedWidth
                     }
                 }
                 DISPLAY_MULTI_COLOR -> {
-                    if(finalHeight*girdColumn/girdRow < allocatedWidth){
-                        finalWidth = finalHeight*girdColumn/girdRow
+                    finalWidth = if(finalHeight*girdColumn/girdRow < allocatedWidth){
+                        finalHeight*girdColumn/girdRow
                     }else{
-                        finalWidth = allocatedWidth
+                        allocatedWidth
                     }
                 }
             }

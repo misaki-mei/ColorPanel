@@ -331,8 +331,8 @@ class ColorPanelView : View {
         setMeasuredDimension(finalWidth,finalHeight)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
+    override fun onSizeChanged(w: Int, h: Int, oldW: Int, oldH: Int) {
+        super.onSizeChanged(w, h, oldW, oldH)
         this.w = w
         this.h = h
 

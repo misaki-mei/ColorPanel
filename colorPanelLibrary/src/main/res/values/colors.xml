@@ -4,6 +4,12 @@
     <color name="colorPanelBlack">#ff000000</color>
     <color name="colorPanelAccent">#FFFF4081</color>
     <color name="colorPanelRed">#ffff0000</color>
+    <color name="colorPanelDarkRed">#d14f4f</color>
     <color name="colorPanelDarkGrey">#535353</color>
-    <color name="colorPanelBlue">#3F51B5</color>
+    <color name="colorPanelBlue">#0000ff</color>
+    <color name="colorPanelDarkBlue">#3F51B5</color>
+    <color name="colorPanelGreen">#00ff00</color>
+    <color name="colorPanelDarkGreen">#58bc58</color>
+    <color name="colorPanelHalfPink">#4bff00ff</color>
+    <color name="colorPanelTransparent">#00ffffff</color>
 </resources>
