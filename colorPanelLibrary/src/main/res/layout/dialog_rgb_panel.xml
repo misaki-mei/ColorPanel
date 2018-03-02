@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <snowyuki.colorpanellibrary.view.ColorDisplayView
+        android:id="@+id/rgbPanelColorIndicator"
+        app:color1="@color/colorPanelHalfPink"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"/>
+
+    <LinearLayout
+        android:id="@+id/rgbPanelControlA"
+        style="@style/rgb_panel_seek_layout">
+
+        <TextView
+            android:text="@string/color_panel_a"
+            android:textColor="@color/colorPanelBlack"
+            style="@style/rgb_panel_seek_text" />
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/rgbPanelSeekBarA"
+            app:bsb_max="255"
+            app:bsb_progress="255"
+            app:bsb_touch_to_seek="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/rgb_panel_seek_layout">
+
+        <TextView
+            android:text="@string/color_panel_r"
+            android:textColor="@color/colorPanelRed"
+            style="@style/rgb_panel_seek_text" />
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/rgbPanelSeekBarR"
+            app:bsb_max="255"
+            app:bsb_progress="255"
+            app:bsb_touch_to_seek="true"
+            app:bsb_second_track_color="@color/colorPanelRed"
+            app:bsb_bubble_color="@color/colorPanelDarkRed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/rgb_panel_seek_layout">
+
+        <TextView
+            android:text="@string/color_panel_g"
+            android:textColor="@color/colorPanelGreen"
+            style="@style/rgb_panel_seek_text" />
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/rgbPanelSeekBarG"
+            app:bsb_max="255"
+            app:bsb_progress="255"
+            app:bsb_touch_to_seek="true"
+            app:bsb_second_track_color="@color/colorPanelGreen"
+            app:bsb_bubble_color="@color/colorPanelDarkGreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/rgb_panel_seek_layout">
+
+        <TextView
+            android:text="@string/color_panel_b"
+            android:textColor="@color/colorPanelBlue"
+            style="@style/rgb_panel_seek_text" />
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/rgbPanelSeekBarB"
+            app:bsb_max="255"
+            app:bsb_progress="255"
+            app:bsb_touch_to_seek="true"
+            app:bsb_second_track_color="@color/colorPanelBlue"
+            app:bsb_bubble_color="@color/colorPanelDarkBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <include layout="@layout/view_dialog_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

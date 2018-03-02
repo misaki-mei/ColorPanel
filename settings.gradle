@@ -1,1 +1,1 @@
-include ':app', ':colorPanelLibrary', ':ColorPanelLibrary'
+include ':app', ':colorPanelLibrary', ':colorPanelLibrary'
