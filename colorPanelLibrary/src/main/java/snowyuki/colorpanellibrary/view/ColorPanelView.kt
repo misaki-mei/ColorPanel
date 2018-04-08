@@ -255,7 +255,7 @@ class ColorPanelView : View {
     }
 
     fun setColor(color : Int){
-        setColor(color,color shr 24)
+        setColor(color,(color shr 24) and 0xff)
     }
 
     fun setColor(color : Int, alpha : Int){

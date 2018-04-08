@@ -61,38 +61,41 @@ class RgbPanelDialog(c : Context) : AlertDialog(c,R.style.rc_dialog){
         if(enableAlphaEdit){
             rgbPanelSeekBarA.setProgress(colorAlpha.toFloat())
             rgbPanelSeekBarA.onProgressChangedListener = object : BubbleSeekBar.OnProgressChangedListener{
-                override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
+                override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) {
                     colorAlpha = progress
                     changeColor()
                 }
+                override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) = Unit
                 override fun getProgressOnActionUp(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
-                override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
             }
         }
 
         rgbPanelSeekBarR.onProgressChangedListener = object : BubbleSeekBar.OnProgressChangedListener{
-            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
+            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) {
                 colorR = progress
                 changeColor()
             }
+
+            override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) = Unit
             override fun getProgressOnActionUp(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
-            override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
         }
         rgbPanelSeekBarG.onProgressChangedListener = object : BubbleSeekBar.OnProgressChangedListener{
-            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
+            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) {
                 colorG = progress
                 changeColor()
             }
+
+            override fun getProgressOnFinally(p0: BubbleSeekBar?, p1: Int, p2: Float, p3: Boolean) = Unit
             override fun getProgressOnActionUp(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
-            override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
         }
         rgbPanelSeekBarB.onProgressChangedListener = object : BubbleSeekBar.OnProgressChangedListener{
-            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
+            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) {
                 colorB = progress
                 changeColor()
             }
+
+            override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float, fromUser: Boolean) = Unit
             override fun getProgressOnActionUp(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
-            override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) = Unit
         }
     }
 

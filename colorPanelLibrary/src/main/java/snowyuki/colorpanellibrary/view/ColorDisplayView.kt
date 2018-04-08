@@ -74,23 +74,23 @@ class ColorDisplayView : View {
     }
 
     @IntDef(
-            DISPLAY_SINGLE_COLOR.toLong(),
-            DISPLAY_MULTI_COLOR.toLong(),
-            DISPLAY_TRANSITION_COLOR.toLong()
+            DISPLAY_SINGLE_COLOR,
+            DISPLAY_MULTI_COLOR,
+            DISPLAY_TRANSITION_COLOR
     )
     annotation class DisplayMode
 
     @IntDef(
-            TRANSITION_LINEAR.toLong(),
-            TRANSITION_RADIAL.toLong(),
-            TRANSITION_SWEEP.toLong()
+            TRANSITION_LINEAR,
+            TRANSITION_RADIAL,
+            TRANSITION_SWEEP
     )
     annotation class TransitionStyle
 
     @IntDef(
-            SHAPE_RECT.toLong(),
-            SHAPE_ROUND_RECT.toLong(),
-            SHAPE_CIRCLE.toLong()
+            SHAPE_RECT,
+            SHAPE_ROUND_RECT,
+            SHAPE_CIRCLE
     )
     annotation class MaskShape
 

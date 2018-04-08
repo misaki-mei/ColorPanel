@@ -1,7 +1,6 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-// This is the library version used when deploying the artifact
 version = "1.0.0"
 
 def siteUrl = 'https://github.com/misaki-mei/ColorPanel'      // 项目的主页
@@ -10,14 +9,11 @@ group = "ColorPanel"       // Maven Group ID for the artifact，一般填你唯�
 
 install {
     repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
         pom {
             project {
                 packaging 'aar'
-                // Add your description here
                 name 'colorPanelLibrary'
                 url siteUrl
-                // Set your license
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
@@ -26,7 +22,7 @@ install {
                 }
                 developers {
                     developer {
-                        id 'Snowyuki'        //填写的一些基本信息
+                        id 'Snowyuki'
                         name 'Snowyuki'
                         email 'snowy.yuki@qq.com'
                     }
@@ -41,23 +37,43 @@ install {
     }
 }
 
+// This generates sources.jar
 task sourcesJar(type: Jar) {
     classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.java.sourceFiles
 }
 
-task javadoc(type: Javadoc, dependsOn: dokka) {
-
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
+// This generates javadoc.jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
 
+task classesJar(type: Jar) {
+    from "$buildDir/intermediates/classes/release"
+}
+
 artifacts {
+    archives classesJar
     archives javadocJar
     archives sourcesJar
+}
+
+// javadoc configuration
+javadoc {
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version '1.0.0'
+        links "http://docs.oracle.com/javase/7/docs/api"
+        title 'colorPanelLibrary'
+    }
 }
 
 Properties properties = new Properties()
@@ -68,11 +84,15 @@ bintray {
     key = properties.getProperty("bintray.apikey")
     configurations = ['archives']
     pkg {
-        repo = "android"
-        name = "ColorPanel"    //发布到JCenter上的项目名字
+        repo = "ColorPanel"
+        name = "colorPanelLibrary"    //发布到JCenter上的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         publish = true
+        version{
+            name = 'colorPanelLibrary'
+            released = new Date()
+        }
     }
 }
